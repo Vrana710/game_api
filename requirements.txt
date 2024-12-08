@@ -1,0 +1,17 @@
+Flask==2.3.0
+Flask-SQLAlchemy==3.0.0
+Flask-Migrate==3.1.0
+Flask-WTF==1.1.1
+Flask-Login==0.6.2
+psycopg2==2.9.6
+Flask-Bcrypt==1.0.1
+python-dotenv==0.21.1
+Werkzeug==2.3.6
+
+WTForms~=3.1.2
+alembic~=1.13.2
+SQLAlchemy~=2.0.34
+DateTime~=5.5
+requests~=2.32.3
+PyJWT~=2.8.0
+pytest~=8.2.2

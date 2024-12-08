@@ -1,0 +1,39 @@
+# .gitignore
+
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual Environment
+venv/
+env/
+
+# Flask instance folder (for development use)
+instance/
+
+# .env file to avoid exposing sensitive information
+.env
+
+# Database file (if any)
+*.db
+
+# Logs
+*.log
+
+# Coverage report
+.coverage
+*.cover
+
+# Flask migrations
+migrations/
+
+# PyCharm or VS Code project files
+.idea/
+.vscode/
+
+# Jupyter Notebook checkpoint files
+.ipynb_checkpoints/
+
+# MacOS system files
+.DS_Store

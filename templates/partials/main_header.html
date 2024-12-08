@@ -1,0 +1,34 @@
+<!-- =============================================================================
+     Project: Game API App
+     Developer: Varsha Rana
+     File: main_header.html
+     Description: This file contains the header section for the web application.
+                  It includes the site logo with a link to the home page and a
+                  responsive navigation menu. The navigation menu provides links to
+                  essential pages such as the home page, login, signup, and contact pages.
+                  Additionally, a responsive nav-switch icon is included for smaller devices
+                  to toggle the menu visibility. The header is designed to be user-friendly
+                  and adaptable across various devices, ensuring easy navigation throughout
+                  the application.
+     Created: 2024-12-02
+     Updated: 2024-12-08
+============================================================================= -->
+
+<!-- Header section -->
+<a class="site-logo" href="{{ url_for('home') }}">
+    <img src="../static/img/logo.png" alt="">
+</a>
+<!-- responsive -->
+<div class="nav-switch">
+    <i class="fa fa-bars"></i>
+</div>
+<!-- site menu -->
+<nav class="main-menu">
+    <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('signup_user') }}">SingUp</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+    </ul>
+</nav>
+<!-- Header section end -->

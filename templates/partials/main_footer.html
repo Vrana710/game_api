@@ -1,0 +1,27 @@
+<!-- =============================================================================
+     Project: Game API App
+     Developer: Varsha Rana
+     File: main_footer.html
+     Description: This file contains the footer section for the web application.
+                  It includes a navigation menu with links to the home page, login,
+                  signup, and contact pages. Additionally, the footer displays a
+                  copyright notice and credits the developer. The design is
+                  responsive to ensure compatibility across devices. This footer
+                  serves as a consistent, easy-to-access component across all pages
+                  of the application.
+     Created: 2024-12-02
+     Updated: 2024-12-08
+============================================================================= -->
+
+<!-- Footer section -->
+<ul class="footer-menu">
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('login') }}">Login</a></li>
+    <li><a href="{{ url_for('signup_user') }}">SingUp</a></li>
+    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+</ul>
+<p class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+    Develop by Varsha Rana
+</p>
+<!-- Footer section end -->

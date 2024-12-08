@@ -1,0 +1,32 @@
+<!-- =============================================================================
+     Project: Game API App
+     Developer: Varsha Rana
+     File: messages.html
+     Description: This file handles the display of flash messages within the
+                  web application. It uses Flask's `get_flashed_messages` to
+                  retrieve and display messages, categorized by types such as
+                  success, error, warning, or info. The flash messages appear
+                  dynamically when certain actions are performed, notifying users
+                  about the status of their actions (e.g., success, error). Each
+                  message includes a close button that allows users to dismiss it.
+                  The messages are displayed responsively, ensuring they are
+                  accessible and easily readable across different devices.
+     Created: 2024-12-02
+     Updated: 2024-12-08
+============================================================================= -->
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=True) %}
+{% if messages %}
+<div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}" id="flash-{{ loop.index }}">
+        <span>{{ message }}</span>
+        {% if category in ['danger', 'info', 'warning', 'error'] %}
+        <button class="close" onclick="this.parentElement.style.display='none';">&times</button>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}

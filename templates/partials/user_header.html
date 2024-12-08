@@ -1,0 +1,38 @@
+<!-- =============================================================================
+     Project: Game API App
+     Developer: Varsha Rana
+     File: user_header.html
+     Description: This file contains the header section specifically for the user
+                  interface of the web application. It includes the site logo,
+                  which links to the home page, and a responsive navigation menu
+                  tailored for user-specific actions. The menu provides links to
+                  important user sections such as the user dashboard, adding a
+                  character, viewing the character list, and viewing the user profile.
+                  A logout link is also included to allow users to log out of their
+                  session. A responsive nav-switch icon is included for smaller devices
+                  to toggle the menu visibility. This header ensures easy access to all
+                  user-related functionalities and is designed to be user-friendly across
+                  different devices.
+     Created: 2024-12-02
+     Updated: 2024-12-08
+============================================================================= -->
+
+<!-- Header section -->
+<a class="site-logo" href="{{ url_for('home') }}">
+    <img src="../static/img/logo.png" alt="">
+</a>
+<!-- responsive -->
+<div class="nav-switch">
+    <i class="fa fa-bars"></i>
+</div>
+<!-- site menu -->
+<nav class="main-menu">
+    <ul>
+        <li><a href="{{ url_for('user_bp.user_dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('user_bp.user_add_character') }}">Add Character</a></li>
+        <li><a href="{{ url_for('user_bp.my_character_list') }}">View Character</a></li>
+        <li><a href="{{ url_for('user_bp.user_profile') }}">View Profile</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>
+<!-- Header section end -->

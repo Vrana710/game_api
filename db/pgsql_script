@@ -1,0 +1,69 @@
+-- Create User table
+CREATE TABLE "user" (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(150) UNIQUE NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(150) NOT NULL,
+    date_of_birth DATE,
+    gender VARCHAR(50),
+    profile_picture VARCHAR(300),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create House table
+CREATE TABLE house (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Create Role table
+CREATE TABLE role (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Create Strength table
+CREATE TABLE strength (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Create Character table
+CREATE TABLE character (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    house_id INTEGER REFERENCES house(id) ON DELETE SET NULL,
+    animal VARCHAR(100),
+    symbol VARCHAR(100),
+    nickname VARCHAR(100),
+    role_id INTEGER REFERENCES role(id) ON DELETE SET NULL,
+    age INTEGER,
+    death INTEGER,
+    strength_id INTEGER REFERENCES strength(id) ON DELETE SET NULL,
+    user_id INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Contact table
+CREATE TABLE contact (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create relationships for the many-to-one relationships in Character table
+-- Character to House
+ALTER TABLE character ADD CONSTRAINT fk_character_house FOREIGN KEY (house_id) REFERENCES house(id);
+
+-- Character to Role
+ALTER TABLE character ADD CONSTRAINT fk_character_role FOREIGN KEY (role_id) REFERENCES role(id);
+
+-- Character to Strength
+ALTER TABLE character ADD CONSTRAINT fk_character_strength FOREIGN KEY (strength_id) REFERENCES strength(id);
+
+-- Character to User
+ALTER TABLE character ADD CONSTRAINT fk_character_user FOREIGN KEY (user_id) REFERENCES "user"(id);
