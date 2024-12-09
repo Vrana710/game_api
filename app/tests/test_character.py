@@ -1,3 +1,32 @@
+"""=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_character.py
+Description:
+    This file contains unit tests for the Game API App, focusing on
+    the `Character` entity. The tests ensure the proper functioning of
+    CRUD operations (Create, Read, Update, Delete) for characters, validating
+    both the API endpoints and database interactions.
+
+    Key Features Tested:
+    - Adding a new character.
+    - Retrieving character details.
+    - Updating existing character data.
+    - Deleting characters.
+    - Handling invalid or missing input during character creation.
+    - Verifying behavior when accessing non-existent characters.
+
+    The application leverages Flask for API development and SQLAlchemy
+    for ORM-based database interactions. Test configurations utilize
+    a separate test database for isolated and reliable test results.
+
+    The `pytest` framework is employed for test automation, with fixtures
+    to manage app context, database setup/teardown, and sample data creation.
+
+Created: 2024-12-02
+Updated: 2024-12-08
+============================================================================="""
+
 import os
 import pytest
 from flask import url_for

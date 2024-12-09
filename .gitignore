@@ -37,3 +37,4 @@ migrations/
 
 # MacOS system files
 .DS_Store
+.pylintrc

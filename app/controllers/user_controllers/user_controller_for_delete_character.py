@@ -61,23 +61,28 @@ def delete_character(character_id):
         deleted_rows = Character.query.filter_by(id=character_id, user_id=user.id).delete()
         # No character found for the user
         if deleted_rows == 0:
-            flash('Character not found or does not belong to you.', 'warning')
+            flash('Character not found or does not belong to you.',
+                  'warning')
             return redirect(url_for('user_bp.my_character_list'))
 
         db.session.commit()
-        flash('Character deleted successfully!', 'success')
+        flash('Character deleted successfully!',
+              'success')
 
     except IntegrityError:
         # Rollback on integrity error
         db.session.rollback()
-        flash('Error deleting character: Integrity error occurred.', 'danger')
+        flash('Error deleting character: Integrity error occurred.',
+              'danger')
     except OperationalError:
         # Rollback on operational error
         db.session.rollback()
-        flash('Error deleting character: A database operational error occurred.', 'danger')
+        flash('Error deleting character: A database operational error occurred.',
+              'danger')
     except SQLAlchemyError:
         # Rollback on SQLAlchemy-related errors
         db.session.rollback()
-        flash('Error deleting character: A database error occurred.', 'danger')
+        flash('Error deleting character: A database error occurred.',
+              'danger')
 
     return redirect(url_for('user_bp.my_character_list'))

@@ -86,9 +86,6 @@ def signup_user():
             db.session.add(new_user)
             db.session.commit()
 
-            # Generate JWT token
-            # token = generate_jwt_token(new_user.id)
-
             flash('User registration successful!', 'success')
             return redirect(url_for('auth_bp.login'))
         except IntegrityError:

@@ -31,7 +31,13 @@ class DataManagerInterface(ABC):
         pass
 
     @abstractmethod
-    def add_user(self, user_name, user_email, user_password, date_of_birth, gender, profile_picture):
+    def add_user(self,
+                 user_name,
+                 user_email,
+                 user_password,
+                 date_of_birth,
+                 gender,
+                 profile_picture):
         """Add a new user with optional ."""
         pass
 

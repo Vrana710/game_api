@@ -1,3 +1,30 @@
+"""=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_config.py
+Description:
+    This file contains unit tests to verify the configurations of the
+    Game API App. These tests ensure that the application environment
+    settings are correctly loaded and applied during runtime.
+
+    Key Features Tested:
+    - Validation of critical configurations such as database URI,
+      secret key, debug mode, and testing mode.
+    - Handling of missing or invalid configuration keys.
+    - Ensuring the correct test database URI is utilized during tests.
+
+    The application uses environment variables to manage sensitive
+    information securely. This test suite ensures that the application
+    adapts seamlessly to various environments without compromising
+    functionality or security.
+
+    The `pytest` framework is employed for test automation, providing
+    a structured and reliable approach to configuration validation.
+
+Created: 2024-12-02
+Updated: 2024-12-08
+============================================================================="""
+
 import pytest
 import os
 from run import create_app
@@ -29,8 +56,8 @@ def test_configurations(app):
 
 def test_invalid_config(app):
     """Test invalid configuration handling."""
-    with pytest.raises(KeyError):
-        invalid_value = app.config['NON_EXISTENT_KEY']
+    value = app.config.get('NON_EXISTENT_KEY')
+    assert value is None  # Check that accessing a non-existent key returns None
 
 
 def test_database_uri(app):

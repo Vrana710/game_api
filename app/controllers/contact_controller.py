@@ -54,7 +54,7 @@ def contact():
             db.session.add(new_contact)
             db.session.commit()
             flash('Your message has been sent!', 'success')
-            return redirect(url_for('contact'))
+            return redirect(url_for('auth_bp.contact'))
         except IntegrityError:
             db.session.rollback()
             flash('There was an issue saving your message. Please try again.', 'danger')

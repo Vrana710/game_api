@@ -114,7 +114,8 @@ def edit_user_profile(user_id):
             file = request.files['profile_picture']
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                profile_picture_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                profile_picture_path = os.path.join(current_app.config['UPLOAD_FOLDER'],
+                                                    filename)
                 file.save(profile_picture_path)
                 # Save only the filename
                 user.profile_picture = filename
@@ -124,7 +125,9 @@ def edit_user_profile(user_id):
                 print(f"Profile Picture Path: {profile_picture_path}")
 
         db.session.commit()
-        flash('Your profile updated successfully!', 'success')
+        flash('Your profile updated successfully!',
+              'success')
         return redirect(url_for('user_bp.user_profile'))
 
-    return render_template('edit_user_profile.html', user=user)
+    return render_template('edit_user_profile.html',
+                           user=user)

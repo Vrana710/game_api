@@ -18,9 +18,9 @@ Updated: 2024-12-08
 ============================================================================="""
 
 import os
+from dotenv import load_dotenv
 from app.models import db, User, House, Role, Strength, Character, Contact
 from app.datamanager.data_manager_interface import DataManagerInterface
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -57,13 +57,21 @@ class PostgreSQLDataManager(DataManagerInterface):
                  date_of_birth,
                  gender,
                  profile_picture):
-
+        """
+        Add a new user Contains user information such as:
+        - name
+        - email
+        - password
+        - date_of_birth
+        - gender
+        - profile_picture
+        """
         new_user = User(
             username=user_name,
             email=user_email,
             date_of_birth=date_of_birth,
             gender=gender,
-            profile_picture='default_profile.png'
+            profile_picture=profile_picture
         )
         new_user.set_password(user_password)
         self.db.session.add(new_user)

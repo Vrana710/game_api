@@ -44,106 +44,94 @@ from app.controllers.common_fun import (user_logged_in,
 
 
 def my_character_list():
-
+    """
+    Handles character list
+    """
     if not user_logged_in():
         # Handle case where user is not logged in
         return handle_not_logged_in()
 
     user = user_logged_in()
-
     if user is None:
         # Handle case where the user object is invalid
         return handle_invalid_user()
 
-    # Get search query and filters from request arguments
-    search_query = request.args.get('search', '', type=str).lower()
-    house_filter = request.args.get('house', '', type=str)
-    role_filter = request.args.get('role', '', type=str)
-    strength_filter = request.args.get('strength', '', type=str)
+    # Fetch filter and sorting parameters
+    filters = {
+        "search_query": request.args.get('search', '', type=str).lower(),
+        "house_filter": request.args.get('house', '', type=str),
+        "role_filter": request.args.get('role', '', type=str),
+        "strength_filter": request.args.get('strength', '', type=str),
+        "age_more_than": request.args.get('age_more_than', '', type=int),
+        "age_less_than": request.args.get('age_less_than', '', type=int),
+    }
+    sort_options = {
+        "sort_column": request.args.get('sort_column', 'name'),
+        "sort_order": request.args.get('sort_order', 'asc'),
+    }
+    pagination = {
+        "page": request.args.get('page', 1, type=int),
+        "per_page": 5,
+    }
 
-    # Handling age filters as integers (if provided)
-    age_more_than = request.args.get('age_more_than', '', type=int)
-    age_less_than = request.args.get('age_less_than', '', type=int)
+    # Build query
+    query = build_character_query(user.id, filters, sort_options)
 
-    # Filter characters by the current user's ID and apply additional filters
-    query = Character.query.filter_by(user_id=user.id)
+    # Pagination logic
+    num_characters = query.count()
+    characters_query = query.paginate(page=pagination["page"], per_page=pagination["per_page"])
 
-    # Filter by name (case-insensitive)
-    if search_query:
-        query = query.filter(Character.name.ilike(f"%{search_query}%"))
+    # Fetch dropdown options
+    dropdown_options = {
+        "houses": House.query.all(),
+        "roles": Role.query.all(),
+        "strengths": Strength.query.all(),
+    }
 
-    # Filter by house (case-insensitive)
-    if house_filter:
-        query = query.filter(Character.house.has(House.name.ilike(f"%{house_filter}%")))
+    # Determine if the request is AJAX for partial rendering
+    template = (
+        'partials/manage_character_content.html'
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        else 'character_list.html'
+    )
 
-    # Filter by role
-    if role_filter:
-        query = query.filter_by(role_id=role_filter)
+    return render_template(
+        template,
+        user=user,
+        num_characters=num_characters,
+        characters_query=characters_query,
+        dropdown_options=dropdown_options,
+        **filters,
+        **sort_options
+    )
 
-    # Filter by strength
-    if strength_filter:
-        query = query.filter_by(strength_id=strength_filter)
 
-    # Filter by age (greater than or equal to 'age_more_than'
-    # and less than or equal to 'age_less_than')
-    if age_more_than is not None and age_more_than != '':
-        query = query.filter(Character.age >= age_more_than)
+def build_character_query(user_id, filters, sort_options):
+    """
+    Builds the character query with filters and sorting.
+    """
+    query = Character.query.filter_by(user_id=user_id)
 
-    if age_less_than is not None and age_less_than != '':
-        query = query.filter(Character.age <= age_less_than)
+    # Apply filters
+    if filters["search_query"]:
+        query = query.filter(Character.name.ilike(f"%{filters['search_query']}%"))
+    if filters["house_filter"]:
+        query = query.filter(Character.house.has(House.name.ilike(f"%{filters['house_filter']}%")))
+    if filters["role_filter"]:
+        query = query.filter_by(role_id=filters["role_filter"])
+    if filters["strength_filter"]:
+        query = query.filter_by(strength_id=filters["strength_filter"])
+    if filters["age_more_than"]:
+        query = query.filter(Character.age >= filters["age_more_than"])
+    if filters["age_less_than"]:
+        query = query.filter(Character.age <= filters["age_less_than"])
 
-    # Sorting logic
-    # Default to sorting by name
-    sort_column = request.args.get('sort_column', 'name')
-    # Default to ascending order
-    sort_order = request.args.get('sort_order', 'asc')
-
+    # Apply sorting
+    sort_column = sort_options["sort_column"]
+    sort_order = sort_options["sort_order"]
     if sort_order == 'asc':
         query = query.order_by(getattr(Character, sort_column).asc())
     else:
         query = query.order_by(getattr(Character, sort_column).desc())
 
-    # Pagination logic
-    num_characters = query.count()
-    page = request.args.get('page', 1, type=int)
-    per_page = 5
-    characters_query = query.paginate(page=page, per_page=per_page)
-
-    # Get filter options for dropdowns (houses, roles, strengths)
-    houses = House.query.all()
-    roles = Role.query.all()
-    strengths = Strength.query.all()
-
-    # Check if request is AJAX for partial rendering
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('partials/manage_character_content.html',
-                               user=user,
-                               num_characters=num_characters,
-                               characters_query=characters_query,
-                               houses=houses,
-                               roles=roles,
-                               strengths=strengths,
-                               search_query=search_query,
-                               house_filter=house_filter,
-                               role_filter=role_filter,
-                               strength_filter=strength_filter,
-                               age_more_than=age_more_than,
-                               age_less_than=age_less_than,
-                               sort_column=sort_column,
-                               sort_order=sort_order)
-
-    return render_template('character_list.html',
-                           user=user,
-                           num_characters=num_characters,
-                           characters_query=characters_query,
-                           houses=houses,
-                           roles=roles,
-                           strengths=strengths,
-                           search_query=search_query,
-                           house_filter=house_filter,
-                           role_filter=role_filter,
-                           strength_filter=strength_filter,
-                           age_more_than=age_more_than,
-                           age_less_than=age_less_than,
-                           sort_column=sort_column,
-                           sort_order=sort_order)
+    return query
