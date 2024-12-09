@@ -1,0 +1,30 @@
+<!-- =============================================================================
+     Project: Game API App
+     Developer: Varsha Rana
+     File: user_footer.html
+     Description: This file contains the footer section specifically for the user
+                  interface of the web application. It includes a navigation menu
+                  with links to key user pages such as the user dashboard, adding a
+                  character, viewing the character list, and viewing the user profile.
+                  The footer also features a logout link, allowing users to exit their
+                  session. Additionally, it displays a copyright notice and credits the
+                  developer. The footer is designed to be responsive, ensuring easy
+                  access to important user features across various devices, and serves
+                  as a consistent component throughout the application.
+     Created: 2024-12-02
+     Updated: 2024-12-08
+============================================================================= -->
+
+<!-- Footer section -->
+<ul class="footer-menu">
+    <li><a href="{{ url_for('user_bp.user_dashboard') }}">Dashboard</a></li>
+    <li><a href="{{ url_for('user_bp.user_add_character') }}">Add Character</a></li>
+    <li><a href="{{ url_for('user_bp.my_character_list') }}">View Character</a></li>
+    <li><a href="{{ url_for('user_bp.user_profile') }}">View Profile</a></li>
+    <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
+</ul>
+<p class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+    Develop by Varsha Rana
+</p>
+<!-- Footer section end -->
