@@ -110,9 +110,9 @@ def build_character_query(user_id, filters, sort_options):
     if filters["house_filter"]:
         query = query.filter(Character.house.has(House.name.ilike(f"%{filters['house_filter']}%")))
     if filters["role_filter"]:
-        query = query.filter_by(role_id=filters["role_filter"])
+        query = query.filter(Character.role.has(Role.name.ilike(f"%{filters["role_filter"]}%")))
     if filters["strength_filter"]:
-        query = query.filter_by(strength_id=filters["strength_filter"])
+        query = query.filter(Character.strength.has(Strength.name.ilike(f"%{filters["strength_filter"]}%")))
     if filters["age_more_than"]:
         query = query.filter(Character.age >= filters["age_more_than"])
     if filters["age_less_than"]:
