@@ -20,17 +20,6 @@ from app import create_app
 app = create_app()
 
 
-# Home route
-@app.route('/')
-def index():
-    return render_template('index.html')  # Ensure this template exists
-
-
-@app.route('/home')
-def home():
-    return render_template('index.html')  # Ensure this template exists
-
-
 # Custom error handler for 404 - Page Not Found
 @app.errorhandler(404)
 def page_not_found(error):

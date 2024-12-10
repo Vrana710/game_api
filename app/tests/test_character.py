@@ -1,4 +1,4 @@
-""""=============================================================================
+"""=============================================================================
 Project: Game API App
 Developer: Varsha Rana
 File: test_character.py
@@ -28,13 +28,16 @@ Updated: 2024-12-09
 =============================================================================
 """
 import os
+import uuid
 import pytest
 from flask import url_for
 from app import create_app
 from app.models import db, Character
 from dotenv import load_dotenv
+from app.blueprints.utils import fetch_character_data
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')  # Ensure the correct path
+# Ensure the correct path
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 
@@ -44,6 +47,8 @@ def app():
     app = create_app()
     app.config['TESTING'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("TEST_DATABASE_URL")
+    app.config['SERVER_NAME'] = 'localhost:5000'  # or your domain/host
+    app.config['APPLICATION_ROOT'] = '/'  # The root path of your application
 
     # Initialize the database inside the app context
     with app.app_context():
@@ -67,108 +72,211 @@ def init_db(app):
 
 
 @pytest.fixture
-def sample_character(app):
-    """Fixture to create a sample character."""
+def sample_character(app, logged_in_user):
+    """Fixture to create a sample character associated with the logged-in user."""
     with app.app_context():
         character = Character(
             name="Test Character",
             animal="Dragon",
             symbol="Fire",
             nickname="Testy",
-            age=30
+            age=30,
+            user_id=logged_in_user.id  # Ensure this is the logged-in user's ID
         )
         db.session.add(character)
         db.session.commit()
-    return character
+        print(f"DEBUG: Created character: {character}")  # Debug output
+        return character
 
 
-def test_create_character(client, app):
-    """Test creating a character."""
-    response = client.post(url_for('user_bp.user_add_character'), json={
-        'name': 'New Character',
-        'animal': 'Phoenix',
-        'symbol': 'Flame',
-        'nickname': 'Flamy',
-        'age': 25
-    })
-    assert response.status_code == 201
-    data = response.get_json()
-    assert 'id' in data
-    assert data['name'] == 'New Character'
-    assert data['animal'] == 'Phoenix'
-    assert data['symbol'] == 'Flame'
-    assert data['nickname'] == 'Flamy'
-    assert data['age'] == 25
-
-
-def test_get_character(client, sample_character):
-    """Test retrieving a character."""
-    response = client.get(url_for('user_bp.my_character_list',
-                                  id=sample_character.id))
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data['id'] == sample_character.id
-    assert data['name'] == sample_character.name
-    assert data['animal'] == sample_character.animal
-    assert data['symbol'] == sample_character.symbol
-    assert data['nickname'] == sample_character.nickname
-    assert data['age'] == sample_character.age
-
-
-def test_update_character(client, sample_character):
-    """Test updating a character."""
-    response = client.put(url_for('user_bp.user_edit_character',
-                                  id=sample_character.id),
-                          json={
-        'name': 'Updated Character',
-        'animal': 'Griffin',
-        'symbol': 'Wind',
-        'nickname': 'Griffy',
-        'age': 35
-    })
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data['name'] == 'Updated Character'
-    assert data['animal'] == 'Griffin'
-    assert data['symbol'] == 'Wind'
-    assert data['nickname'] == 'Griffy'
-    assert data['age'] == 35
-
-
-def test_delete_character(client, sample_character, app):
-    """Test deleting a character."""
+@pytest.fixture
+def logged_in_user(client, app):
+    """Fixture to create and log in a user for testing."""
     with app.app_context():
-        db.session.delete(sample_character)
-        # Commit the session to finalize the deletion
+        from app.models import User
+        unique_username = f"test_user_{uuid.uuid4().hex[:8]}"
+        unique_email = f"{unique_username}@example.com"
+
+        test_user = User(username=unique_username, email=unique_email)
+        test_user.set_password("testing@gmail.com")
+        db.session.add(test_user)
         db.session.commit()
 
-        response = client.delete(url_for('user_bp.delete_character',
-                                         id=sample_character.id))
-        assert response.status_code == 204
+        response = client.post(url_for('auth_bp.login'), data={
+            'email': unique_email,
+            'password': 'testing@gmail.com'
+        }, follow_redirects=True)
 
-        # Check if character is actually deleted
-        deleted_response = client.get(url_for('user_bp.my_character_list',
-                                              id=sample_character.id))
-        assert deleted_response.status_code == 404
-        assert 'message' in deleted_response.get_json()
+        assert response.status_code == 200
+
+        return test_user
 
 
-def test_invalid_character_creation(client):
+def test_add_character_from_json(client, app, logged_in_user):
+    """Test adding a character using only the name, fetching other details from characters.json."""
+    with app.app_context():
+        # Use the name of the character to fetch data
+        character_name = "Jon Snow"
+        character_data = fetch_character_data(character_name)
+
+        assert character_data is not None, f"Character '{character_name}' not found in characters.json"
+
+        # Use only the name for the POST request
+        response = client.post(
+            url_for('user_bp.user_add_character'),
+            json={"name": character_data['name']},  # Send only the name
+            headers={'Content-Type': 'application/json'},
+            follow_redirects=True
+        )
+
+        # Assertions
+        assert response.status_code == 201, f"Expected status code 201, got {response.status_code}"
+        data = response.get_json()
+        assert data is not None, "Expected JSON response but got None"
+
+        # Validate database entry
+        db_character = Character.query.filter_by(name=character_data['name']).first()
+        assert db_character is not None, "Character not found in the database"
+        assert db_character.name == character_data['name'], "Database: Name mismatch"
+        assert db_character.animal == character_data['animal'], "Database: Animal mismatch"
+        assert db_character.symbol == character_data['symbol'], "Database: Symbol mismatch"
+        assert db_character.nickname == character_data['nickname'], "Database: Nickname mismatch"
+        assert db_character.age == character_data['age'], "Database: Age mismatch"
+
+
+def test_get_character(client, app, logged_in_user, sample_character):
+    """Test retrieving a character by checking the list of all characters."""
+    with app.app_context():
+        # Fetch all characters with JSON request
+        response = client.get(
+            url_for('user_bp.my_character_list'),
+            headers={'Accept': 'application/json'}
+        )
+        assert response.status_code == 200, "Expected status code 200"
+
+        # Debug: Print the raw response data Delete this after is working
+        data = response.get_json()
+        print("\nDEBUG: Response data:", data)
+
+        assert isinstance(data, list), "Expected a list of characters in response"
+
+        # Iterate to find the sample character
+        found_character = next(
+            (char for char in data if char['name'] == "Test Character"), None
+        )
+
+        assert found_character is not None, ("Sample character not "
+                                             "found in character list")
+        assert found_character[
+                   'name'] == sample_character.name, (f"Expected name '{sample_character.name}', "
+                                                      f"got '{found_character['name']}'")
+        assert found_character[
+                   'animal'] == sample_character.animal, (f"Expected animal '{sample_character.animal}', "
+                                                          f"got '{found_character['animal']}'")
+        assert found_character[
+                   'symbol'] == sample_character.symbol, (f"Expected symbol '{sample_character.symbol}', "
+                                                          f"got '{found_character['symbol']}'")
+        assert found_character[
+                   'nickname'] == sample_character.nickname, (f"Expected nickname '{sample_character.nickname}', "
+                                                              f"got '{found_character['nickname']}'")
+        assert found_character[
+                   'age'] == sample_character.age, (f"Expected age '{sample_character.age}', "
+                                                    f"got '{found_character['age']}'")
+        assert found_character[
+                   'id'] == sample_character.id, (f"Expected id '{sample_character.id}', "
+                                                  f"got '{found_character['id']}'")
+
+
+def test_update_character(client, app, logged_in_user, sample_character):
+    """Test updating a character."""
+    with app.app_context():
+        # Simulate a form submission to update the character
+        response = client.post(
+            url_for('user_bp.user_edit_character',
+                    character_id=sample_character.id),
+            data={
+                'name': 'Updated Character',
+                'animal': 'Griffin',
+                'symbol': 'Wind',
+                'nickname': 'Griffy',
+                'age': 35
+            },
+            follow_redirects=True
+        )
+        assert response.status_code == 200, (f"Expected status code 200, "
+                                             f"got {response.status_code}")
+
+        # Verify the database reflects the updates
+        updated_character = Character.query.get(sample_character.id)
+        assert updated_character is not None, "Character not found in the database"
+        assert updated_character.name == 'Updated Character', "Database: Name update failed"
+        assert updated_character.animal == 'Griffin', "Database: Animal update failed"
+        assert updated_character.symbol == 'Wind', "Database: Symbol update failed"
+        assert updated_character.nickname == 'Griffy', "Database: Nickname update failed"
+        assert updated_character.age == 35, "Database: Age update failed"
+
+
+def test_delete_character(client, app, logged_in_user,
+                          sample_character):
+    """Test deleting a character."""
+    with app.app_context():
+        response = client.post(
+            url_for('auth_bp.login'),
+            data={
+                'email': logged_in_user.email,
+                'password': 'testing@gmail.com'
+            },
+            follow_redirects=True
+        )
+        assert response.status_code == 200, "Failed to log in"
+
+        response = client.post(
+            url_for('user_bp.delete_character',
+                    character_id=sample_character.id),
+            headers={'Content-Type': 'application/json'}
+        )
+        assert response.status_code == 302, (f"Expected status code 302, "
+                                             f"got {response.status_code}")
+
+        deleted_character = Character.query.get(sample_character.id)
+        assert deleted_character is None, ("Character was not deleted from "
+                                           "the database")
+
+
+def test_invalid_character_creation(client, app, logged_in_user):
     """Test invalid character creation (missing required fields)."""
-    response = client.post(url_for('user_bp.user_add_character'), json={
-        'name': ''  # Missing required fields (e.g., 'name')
-    })
-    assert response.status_code == 400
-    data = response.get_json()
-    assert 'error' in data
-    assert data['error'] == 'Missing required fields'
+    with app.app_context():
+        response = client.post(
+            url_for('user_bp.user_add_character'),
+            json={
+                'name': ''  # Missing required fields (e.g., 'name')
+            },
+            headers={'Content-Type': 'application/json'}
+        )
+        assert response.status_code == 400, (f"Expected status code 400, "
+                                             f"got {response.status_code}")
+
+        data = response.get_json()
+        assert 'error' in data, "Expected 'error' in response JSON"
+        assert data[
+                   'error'] == 'Character name is required', (f"Expected error 'Character name is required', "
+                                                              f"got {data['error']}")
 
 
-def test_character_not_found(client):
-    """Test fetching a non-existent character."""
-    response = client.get(url_for('user_bp.my_character_list',
-                                  id=9999))
-    assert response.status_code == 404
-    data = response.get_json()
-    assert 'message' in data
-    assert data['message'] == 'Character not found'
+def test_character_not_found_in_list(client, app, logged_in_user):
+    """Test ensuring a non-existent character is not in the character list."""
+    with app.app_context():  # Add application context
+        # Fetch the list of characters
+        response = client.get(
+            url_for('user_bp.my_character_list'),
+            headers={'Accept': 'application/json'}
+        )
+        assert response.status_code == 200, (f"Expected status code 200, "
+                                             f"got {response.status_code}")
+
+        data = response.get_json()
+        assert isinstance(data, list), "Expected a list of characters in response"
+
+        found_character = next((char for char in data if char['id'] == 9999), None)
+        assert found_character is None, ("Non-existent character should"
+                                         " not be found in the list")

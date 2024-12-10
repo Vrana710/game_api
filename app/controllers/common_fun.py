@@ -44,7 +44,8 @@ from flask import (
     url_for,
     session,
     flash,
-    current_app, make_response)
+    current_app,
+    make_response)
 from werkzeug.utils import secure_filename
 from app.models import db, User, Character, Role, Strength, House
 from app.blueprints.utils import fetch_character_data
@@ -130,7 +131,8 @@ def handle_invalid_user():
     """Handle the case where the user is not valid."""
     session.clear()
     clear_cache()
-    flash('Invalid user. Please log in again.', 'error')
+    flash('Invalid user. Please log in again.',
+          'error')
     # Redirect to login page
     return redirect(url_for('auth_bp.login'))
 
@@ -138,15 +140,17 @@ def handle_invalid_user():
 def handle_missing_character_name():
     """Handle the case where the missing character_name."""
     flash('Character name is required!', 'danger')
-    return redirect(url_for('user_bp.add_character'))
+    return redirect(url_for('user_bp.user_add_character'))
 
 
 def handle_invalid_character_data():
     """
-    Handles the case where the fetched character data is invalid or incomplete.
+    Handles the case where the fetched character data is
+    invalid or incomplete.
     """
     flash('Invalid character data received. '
-          'Please check the data source or try again later.', 'danger')
+          'Please check the data source or try again later.',
+          'danger')
     return redirect(url_for('user_bp.my_character_list'))
 
 
@@ -193,7 +197,8 @@ def check_existing_character(character_name, user_id):
     Checks if a character with the given name already
     exists for the specified admin.
     """
-    character = Character.query.filter_by(name=character_name, user_id=user_id).first()
+    character = Character.query.filter_by(name=character_name,
+                                          user_id=user_id).first()
     return character is not None
 
 
@@ -285,13 +290,15 @@ def save_new_character(character):
     try:
         db.session.add(character)
         db.session.commit()
-        flash('Character added successfully!', 'success')
+        flash('Character added successfully!',
+              'success')
         return redirect(url_for('user_bp.my_character_list'))
     except Exception as e:
         db.session.rollback()
         print(f"Error saving character: {e}")
-        flash('Error adding character: Database error occurred.', 'danger')
-        return redirect(url_for('user_bp.add_character'))
+        flash('Error adding character: Database error occurred.',
+              'danger')
+        return redirect(url_for('user_bp.user_add_character'))
 
 
 def handle_character_update(character):
@@ -314,7 +321,8 @@ def handle_character_update(character):
 
         # Ensure the form data is not empty or invalid
         if not updated_data['name']:
-            flash('Character name is required.', 'danger')
+            flash('Character name is required.',
+                  'danger')
             return redirect(url_for('user_bp.edit_character',
                                     character_id=character.id))
 
@@ -332,13 +340,15 @@ def handle_character_update(character):
         # Commit changes to the database
         db.session.commit()
 
-        flash('Character updated successfully!', 'success')
+        flash('Character updated successfully!',
+              'success')
         # Redirect to the character list page
         return redirect(url_for('user_bp.my_character_list'))
 
     except Exception as e:
         # Rollback the session if an error occurs
         db.session.rollback()
-        flash(f'Error updating character: {str(e)}', 'danger')
+        flash(f'Error updating character: {str(e)}',
+              'danger')
         # Redirect to the user's characters list page
         return redirect(url_for('user_bp.my_character_list'))

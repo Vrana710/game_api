@@ -43,8 +43,11 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-    app.config['CACHE_TYPE'] = 'simple'  # Simple in-memory cache for development
-    app.config['UPLOAD_FOLDER'] = './app/static/img/upload/profile_image'
+    # Simple in-memory cache for development
+    app.config['CACHE_TYPE'] = 'simple'
+    # app.config['UPLOAD_FOLDER'] = './app/static/img/upload/profile_image'
+    # Set the upload folder path
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'app', 'static', 'img', 'upload', 'profile_image')
 
     # Ensure the upload folder exists
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
@@ -59,9 +62,11 @@ def create_app():
     cache_instance.init_app(app)
 
     # Register Blueprints
+    from .blueprints.main import main_bp
     from .blueprints.user import user_bp
     from .blueprints.auth import auth_bp
 
+    app.register_blueprint(main_bp)
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
