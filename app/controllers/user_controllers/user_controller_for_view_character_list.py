@@ -81,13 +81,6 @@ def my_character_list():
     num_characters = query.count()
     characters_query = query.paginate(page=pagination["page"], per_page=pagination["per_page"])
 
-    # Fetch dropdown options
-    dropdown_options = {
-        "houses": House.query.all(),
-        "roles": Role.query.all(),
-        "strengths": Strength.query.all(),
-    }
-
     # Determine if the request is AJAX for partial rendering
     template = (
         'partials/manage_character_content.html'
@@ -100,7 +93,6 @@ def my_character_list():
         user=user,
         num_characters=num_characters,
         characters_query=characters_query,
-        dropdown_options=dropdown_options,
         **filters,
         **sort_options
     )

@@ -31,13 +31,17 @@ Updated: 2024-12-08
 
 import os
 import json
-from dotenv import load_dotenv
 
-# Load environment variables from the .env file
-load_dotenv()
 
-# Fetch the characters.json path from the .env file
-CHARACTERS_JSON_PATH = os.getenv('CHARACTERS_JSON_PATH')
+# Correct the base directory
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+CHARACTERS_JSON_PATH = os.path.join(base_dir, 'characters.json')
+
+# Validate if the file exists
+if not os.path.exists(CHARACTERS_JSON_PATH):
+    raise FileNotFoundError(f"The file {CHARACTERS_JSON_PATH} does not exist.")
+
+print(f"Characters JSON path: {CHARACTERS_JSON_PATH}")
 
 
 def _fetch_character_data(character_name):

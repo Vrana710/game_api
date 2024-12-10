@@ -28,24 +28,6 @@
         <!-- House Filter -->
         <input type="text" name="house" placeholder="Search by house" value="{{ house_filter }}">
 
-        <!-- Role Filter -->
-        <select name="role">
-            <option value="">All Roles</option>
-            {% for role in roles %}
-            <option value="{{ role.id }}" {% if role.id== role_filter %} selected {% endif %}>{{ role.name }}</option>
-            {% endfor %}
-        </select>
-
-        <!-- Strength Filter -->
-        <select name="strength">
-            <option value="">All Strengths</option>
-            {% for strength in strengths %}
-            <option value="{{ strength.id }}" {% if strength.id== strength_filter %} selected {% endif %}>{{
-                strength.name }}
-            </option>
-            {% endfor %}
-        </select>
-
         <!-- Age Filters -->
         <input type="number" name="age_more_than" placeholder="Age more than" value="{{ age_more_than }}">
         <input type="number" name="age_less_than" placeholder="Age less than" value="{{ age_less_than }}">
@@ -56,16 +38,14 @@
             <option value="age" {% if sort_column=='age' %} selected {% endif %}>Age</option>
         </select>
         <select name="sort_order">
-            <option value="asc" {% if sort_order=='asc' %} selected {% endif %}>Ascending</option>
+            <option value="asc" {% if sort_ordere=='asc' %} selected {% endif %}>Ascending</option>
             <option value="desc" {% if sort_order=='desc' %} selected {% endif %}>Descending</option>
         </select>
 
         <button type="submit" class="btn btn-primary btn-sm">Filter</button>
         <a href="{{ url_for('user_bp.my_character_list') }}" class="btn btn-secondary btn-sm">Remove Filter</a>
 
-
     </form>
-
 
     <!-- Table for displaying characters -->
     <table id="character-table" class="table table-striped">
