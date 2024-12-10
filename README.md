@@ -289,11 +289,14 @@ To run the tests and interpret the results, follow these steps:
 2. **Run Tests**: To run the test suite, use the following command:
    ```bash
    pytest
+   
+   python3 -m pytest --cov=game_api --cov-report=html
    ```
 
    This will automatically discover and run all the test cases in the `tests` directory. If you wish to run specific tests, you can specify the test file or test function:
    ```bash
     python3 -m pytest tests/test_character.py
+   python3 -m pytest tests/test_config.py
    ```
 
 3. **Interpreting Results**: After running the tests, `pytest` will provide a summary of the test results. If all tests pass, the output will indicate `X passed in Y seconds`. If any tests fail, `pytest` will show detailed information about the failure, including the error message and the failing test case.
