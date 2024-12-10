@@ -40,7 +40,9 @@ To run this project locally, follow the steps below:
 
 5. Apply database migrations:
    ```bash
-   flask db upgrade
+   * Initialize migrations: flask db init
+   * Create a migration script: flask db migrate -m "Initial migration"
+   * Apply the migration: flask db upgrade
    ```
 
 6. Run the application:
