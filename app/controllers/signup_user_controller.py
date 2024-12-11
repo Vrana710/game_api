@@ -64,11 +64,11 @@ def signup_user():
 
         if not email:
             flash('E-mail is required to create a user.', 'error')
-            return redirect(url_for('auth_bp.signup_user'))
+            return redirect(url_for('auth.signup_user'))
 
         if User.query.filter_by(email=email).first():
             flash('User already exists with this E-mail. Please use a different email.', 'error')
-            return redirect(url_for('auth_bp.signup_user'))
+            return redirect(url_for('auth.signup_user'))
 
         hashed_password = generate_password_hash(password)
         profile_picture_filename = handle_file_upload(request)
@@ -87,7 +87,7 @@ def signup_user():
             db.session.commit()
 
             flash('User registration successful!', 'success')
-            return redirect(url_for('auth_bp.login'))
+            return redirect(url_for('auth.login'))
         except IntegrityError:
             db.session.rollback()
             flash('User with this email already exists.', 'danger')

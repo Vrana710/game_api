@@ -105,7 +105,7 @@ def handle_not_logged_in():
         clear_cache()
         session.pop('user_id', None)
         session.clear()
-    return redirect(url_for('auth_bp.login'))
+    return redirect(url_for('auth.login'))
 
 
 def clear_cache():
@@ -114,7 +114,7 @@ def clear_cache():
     if cache and hasattr(cache, 'clear'):
         cache.clear()
 
-    response = make_response(redirect(url_for('auth_bp.login')))
+    response = make_response(redirect(url_for('auth.login')))
     response.headers['Cache-Control'] = ('no-store, '
                                          'no-cache, '
                                          'must-revalidate, '
@@ -134,13 +134,13 @@ def handle_invalid_user():
     flash('Invalid user. Please log in again.',
           'error')
     # Redirect to login page
-    return redirect(url_for('auth_bp.login'))
+    return redirect(url_for('auth.login'))
 
 
 def handle_missing_character_name():
     """Handle the case where the missing character_name."""
     flash('Character name is required!', 'danger')
-    return redirect(url_for('user_bp.user_add_character'))
+    return redirect(url_for('user.user_add_character'))
 
 
 def handle_invalid_character_data():
@@ -151,7 +151,7 @@ def handle_invalid_character_data():
     flash('Invalid character data received. '
           'Please check the data source or try again later.',
           'danger')
-    return redirect(url_for('user_bp.my_character_list'))
+    return redirect(url_for('user.my_character_list'))
 
 
 def handle_missing_character_data():
@@ -160,7 +160,7 @@ def handle_missing_character_data():
     """
     flash('Character data could not be found. '
           'Please check the character name and try again.', 'danger')
-    return redirect(url_for('user_bp.user_add_character'))
+    return redirect(url_for('user.user_add_character'))
 
 
 def handle_add_character_post(user):
@@ -175,7 +175,7 @@ def handle_add_character_post(user):
     # Check if the character already exists
     if check_existing_character(character_name, user_id):
         flash('Character with this name already exists.', 'warning')
-        return redirect(url_for('user_bp.my_character_list'))
+        return redirect(url_for('user.my_character_list'))
 
     # Fetch character data (from JSON or another source)
     character_data = fetch_character_data(character_name)
@@ -292,13 +292,13 @@ def save_new_character(character):
         db.session.commit()
         flash('Character added successfully!',
               'success')
-        return redirect(url_for('user_bp.my_character_list'))
+        return redirect(url_for('user.my_character_list'))
     except Exception as e:
         db.session.rollback()
         print(f"Error saving character: {e}")
         flash('Error adding character: Database error occurred.',
               'danger')
-        return redirect(url_for('user_bp.user_add_character'))
+        return redirect(url_for('user.user_add_character'))
 
 
 def handle_character_update(character):
@@ -323,7 +323,7 @@ def handle_character_update(character):
         if not updated_data['name']:
             flash('Character name is required.',
                   'danger')
-            return redirect(url_for('user_bp.edit_character',
+            return redirect(url_for('user.edit_character',
                                     character_id=character.id))
 
         # Handle 'death' field (convert empty string to None for NULL in the database)
@@ -343,7 +343,7 @@ def handle_character_update(character):
         flash('Character updated successfully!',
               'success')
         # Redirect to the character list page
-        return redirect(url_for('user_bp.my_character_list'))
+        return redirect(url_for('user.my_character_list'))
 
     except Exception as e:
         # Rollback the session if an error occurs
@@ -351,4 +351,4 @@ def handle_character_update(character):
         flash(f'Error updating character: {str(e)}',
               'danger')
         # Redirect to the user's characters list page
-        return redirect(url_for('user_bp.my_character_list'))
+        return redirect(url_for('user.my_character_list'))

@@ -9,7 +9,7 @@ Description: This file contains the SQLAlchemy models for the Game Api App.
              aspects of the game, including character traits, roles, houses, and strengths.
              The file also includes methods for setting and verifying user passwords.
 Created: 2024-12-02
-Updated: 2024-12-04
+Updated: 2024-12-11
 =============================================================================
 """
 from flask_sqlalchemy import SQLAlchemy
@@ -20,6 +20,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
+    # Updated: 2024-12-11 name of table
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)

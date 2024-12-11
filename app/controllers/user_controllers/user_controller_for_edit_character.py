@@ -59,7 +59,7 @@ def user_edit_character(character_id):
         flash('You are not authorized to edit this character.',
               'warning')
         # Redirect to user's characters list page
-        return redirect(url_for('user_bp.my_character_list'))
+        return redirect(url_for('user.my_character_list'))
 
     # Get related data for the form: Houses, Roles, and Strengths
     houses = House.query.all()

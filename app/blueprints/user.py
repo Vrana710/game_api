@@ -50,7 +50,7 @@ from app.controllers.user_controllers.user_controller_for_view_user_profile \
 from app.controllers.user_controllers.user_controller_for_edit_user_profile \
     import edit_user_profile
 
-user_bp = Blueprint('user_bp', __name__,
+user_bp = Blueprint('user', __name__,
                     template_folder=os.path.join(os.path.dirname(__file__),
                                                  '../templates/user'))
 

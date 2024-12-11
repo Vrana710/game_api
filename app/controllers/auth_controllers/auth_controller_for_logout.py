@@ -14,7 +14,7 @@ def logout():
         clear_cache()
         session.pop('user_id', None)
         session.clear()
-        return redirect(url_for('auth_bp.login'))
+        return redirect(url_for('auth.login'))
 
     response = make_response(redirect(url_for('auth_bp.login')))
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'

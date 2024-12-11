@@ -114,7 +114,7 @@
                         {% include 'partials/messages.html' %}
                     </div>
                     <h3 align="center">Add Character</h3>
-                    <form method="POST" action="{{ url_for('user_bp.user_add_character', user_id=user.id) }}" >
+                    <form method="POST" action="{{ url_for('user.user_add_character', user_id=user.id) }}" >
                         <table class="character-form-table">
                             <tr>
                                 <td><label for="name">Name:</label></td>

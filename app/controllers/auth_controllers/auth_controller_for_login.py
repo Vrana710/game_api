@@ -27,7 +27,7 @@ def login():
 
             flash('Login successful!', 'success')
             # Redirect to the user dashboard
-            return redirect(url_for('user_bp.user_dashboard'))
+            return redirect(url_for('user.user_dashboard'))
         else:
             flash('Invalid email/username or password', 'danger')
 

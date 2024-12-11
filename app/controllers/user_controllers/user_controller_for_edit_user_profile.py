@@ -127,7 +127,7 @@ def edit_user_profile(user_id):
         db.session.commit()
         flash('Your profile updated successfully!',
               'success')
-        return redirect(url_for('user_bp.user_profile'))
+        return redirect(url_for('user.user_profile'))
 
     return render_template('edit_user_profile.html',
                            user=user)

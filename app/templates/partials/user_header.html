@@ -18,7 +18,7 @@
 ============================================================================= -->
 
 <!-- Header section -->
-<a class="site-logo" href="{{ url_for('user_bp.user_dashboard') }}">
+<a class="site-logo" href="{{ url_for('user.user_dashboard') }}">
     <img src="../static/img/logo.png" alt="">
 </a>
 <!-- responsive -->
@@ -28,11 +28,11 @@
 <!-- site menu -->
 <nav class="main-menu">
     <ul>
-        <li><a href="{{ url_for('user_bp.user_dashboard') }}">Dashboard</a></li>
-        <li><a href="{{ url_for('user_bp.user_add_character') }}">Add Character</a></li>
-        <li><a href="{{ url_for('user_bp.my_character_list') }}">View Character</a></li>
-        <li><a href="{{ url_for('user_bp.user_profile') }}">View Profile</a></li>
-        <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
+        <li><a href="{{ url_for('user.user_dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('user.user_add_character') }}">Add Character</a></li>
+        <li><a href="{{ url_for('user.my_character_list') }}">View Character</a></li>
+        <li><a href="{{ url_for('user.user_profile') }}">View Profile</a></li>
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
     </ul>
 </nav>
 <!-- Header section end -->

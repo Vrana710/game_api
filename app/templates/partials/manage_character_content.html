@@ -21,7 +21,7 @@
 <!-- Container for character table -->
 <div id="character-table-container">
     <!-- Search Bar and Filters -->
-    <form method="get" action="{{ url_for('user_bp.my_character_list') }}">
+    <form method="get" action="{{ url_for('user.my_character_list') }}">
         <!-- Search Filter -->
         <input type="text" name="search" placeholder="Search by name" value="{{ search_query }}">
 
@@ -49,7 +49,7 @@
         </select>
 
         <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-        <a href="{{ url_for('user_bp.my_character_list') }}" class="btn btn-secondary btn-sm">Remove Filter</a>
+        <a href="{{ url_for('user.my_character_list') }}" class="btn btn-secondary btn-sm">Remove Filter</a>
 
     </form>
 
@@ -85,9 +85,9 @@
             <td>{{ character.age or 'Unknown' }}</td>
             <td>{{ character.death or 'Alive' }}</td>
             <td>
-                <a href="{{ url_for('user_bp.user_edit_character', character_id=character.id) }}"
+                <a href="{{ url_for('user.user_edit_character', character_id=character.id) }}"
                    class="btn btn-primary btn-sm">Edit</a>
-                <form action="{{ url_for('user_bp.delete_character', character_id=character.id) }}" method="post"
+                <form action="{{ url_for('user.delete_character', character_id=character.id) }}" method="post"
                       onsubmit="return confirmDeletion()"
                       style="display:inline;">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -107,7 +107,7 @@
         <ul class="pagination">
             {% if characters_query.has_prev %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('user_bp.my_character_list', page=characters_query.prev_num) }}">Previous</a>
+                <a class="page-link" href="{{ url_for('user.my_character_list', page=characters_query.prev_num) }}">Previous</a>
             </li>
             {% else %}
             <li class="page-item disabled">
@@ -117,7 +117,7 @@
             {% for page_num in characters_query.iter_pages() %}
             {% if page_num %}
             <li class="page-item {% if page_num == characters_query.page %}active{% endif %}">
-                <a class="page-link" href="{{ url_for('user_bp.my_character_list', page=page_num) }}">{{ page_num }}</a>
+                <a class="page-link" href="{{ url_for('user.my_character_list', page=page_num) }}">{{ page_num }}</a>
             </li>
             {% else %}
             <li class="page-item disabled">
@@ -127,7 +127,7 @@
             {% endfor %}
             {% if characters_query.has_next %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('user_bp.my_character_list', page=characters_query.next_num) }}">Next</a>
+                <a class="page-link" href="{{ url_for('user.my_character_list', page=characters_query.next_num) }}">Next</a>
             </li>
             {% else %}
             <li class="page-item disabled">

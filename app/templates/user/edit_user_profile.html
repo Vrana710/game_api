@@ -114,7 +114,7 @@
                         {% include 'partials/messages.html' %}
                     </div>
                     <h3 align="center">Edit Your Profile</h3>
-                    <form method="POST" action="{{ url_for('user_bp.edit_user_profile', user_id=user.id) }}"
+                    <form method="POST" action="{{ url_for('user.edit_user_profile', user_id=user.id) }}"
                           enctype="multipart/form-data">
                         <table class="user-profile-table" align="center">
                             <tr>
@@ -175,7 +175,7 @@
                                     <button type="submit" class="btn primary">Update</button>
                                 </td>
                                 <td class="submit-cell">
-                                    <a href="{{ url_for('user_bp.user_profile', user_id=user.id) }}" class="btn button">Cancel</a>
+                                    <a href="{{ url_for('user.user_profile', user_id=user.id) }}" class="btn button">Cancel</a>
                                 </td>
                             </tr>
 

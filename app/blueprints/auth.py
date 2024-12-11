@@ -40,7 +40,7 @@ from app.controllers.auth_controllers.auth_controller_for_logout import logout
 from app.controllers.contact_controller import contact
 from app.controllers.signup_user_controller import signup_user
 
-auth_bp = Blueprint('auth_bp', __name__,
+auth_bp = Blueprint('auth', __name__,
                     template_folder=os.path.join(os.path.dirname(__file__),
                                                  '../templates'))
 

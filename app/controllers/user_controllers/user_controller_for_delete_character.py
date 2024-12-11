@@ -63,7 +63,7 @@ def delete_character(character_id):
         if deleted_rows == 0:
             flash('Character not found or does not belong to you.',
                   'warning')
-            return redirect(url_for('user_bp.my_character_list'))
+            return redirect(url_for('user.my_character_list'))
 
         db.session.commit()
         flash('Character deleted successfully!',
@@ -85,4 +85,4 @@ def delete_character(character_id):
         flash('Error deleting character: A database error occurred.',
               'danger')
 
-    return redirect(url_for('user_bp.my_character_list'))
+    return redirect(url_for('user.my_character_list'))
