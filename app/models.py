@@ -3,7 +3,7 @@ Project: Game Api App
 Developer: Varsha Rana
 File: models.py
 Description: This file contains the SQLAlchemy models for the Game Api App.
-             It defines the structure of the 'User', 'House', 'Role', 'Strength',
+             It defines the structure of the 'Users', 'House', 'Role', 'Strength',
              'Character', and 'Contact' tables in the database. The 'User' model
              handles user authentication, while the other models represent various
              aspects of the game, including character traits, roles, houses, and strengths.
@@ -20,7 +20,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -114,7 +114,7 @@ class Character(db.Model):
     age = db.Column(db.Integer, nullable=True)
     death = db.Column(db.Integer, nullable=True)
     strength_id = db.Column(db.Integer, db.ForeignKey('strength.id'), nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp(), nullable=True)

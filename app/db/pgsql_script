@@ -1,5 +1,5 @@
 -- Create User table
-CREATE TABLE "user" (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(150) UNIQUE NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE character (
     age INTEGER,
     death INTEGER,
     strength_id INTEGER REFERENCES strength(id) ON DELETE SET NULL,
-    user_id INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -66,4 +66,4 @@ ALTER TABLE character ADD CONSTRAINT fk_character_role FOREIGN KEY (role_id) REF
 ALTER TABLE character ADD CONSTRAINT fk_character_strength FOREIGN KEY (strength_id) REFERENCES strength(id);
 
 -- Character to User
-ALTER TABLE character ADD CONSTRAINT fk_character_user FOREIGN KEY (user_id) REFERENCES "user"(id);
+ALTER TABLE character ADD CONSTRAINT fk_character_user FOREIGN KEY (user_id) REFERENCES users(id);

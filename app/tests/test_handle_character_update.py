@@ -22,7 +22,7 @@ class TestHandleCharacterUpdatePostSuccess(unittest.TestCase):
         """Set up the test environment, create test data."""
         self.app = create_app()
         self.client = self.app.test_client()
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("TEST_DATABASE_URL")
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
         self.app.config['SERVER_NAME'] = 'localhost:5000'
         self.app.config['APPLICATION_ROOT'] = '/'
         self.app.config['TESTING'] = True
@@ -71,11 +71,11 @@ class TestHandleCharacterUpdatePostSuccess(unittest.TestCase):
 
             db.session.commit()
 
-    def tearDown(self):
-        """Clean up after each test."""
-        with self.app.app_context():
-            db.session.remove()
-            db.drop_all()
+    # def tearDown(self):
+    #     """Clean up after each test."""
+    #     with self.app.app_context():
+    #         db.session.remove()
+    #         db.drop_all()
 
     @patch('app.controllers.common_fun.fetch_character_data')
     def test_handle_character_update_post_success(self, mock_fetch_character_data):
@@ -86,9 +86,9 @@ class TestHandleCharacterUpdatePostSuccess(unittest.TestCase):
         # Mock the character data to be fetched
         mock_fetch_character_data.return_value = {
             'name': 'Harry Potter',
-            'house': 'Gryffindor',
-            'role': 'Wizard',
-            'strength': 'Bravery',
+            'house': self.house,
+            'role': self.role,
+            'strength': self.strength,
             'animal': 'Owl',
             'symbol': 'Lightning Bolt',
             'nickname': 'The Chosen One',
@@ -101,17 +101,22 @@ class TestHandleCharacterUpdatePostSuccess(unittest.TestCase):
             session_data['user_id'] = self.user.id  # Ensure the user is logged in
 
         # Make a POST request to update the character
-        response = self.client.post(f'/user/update_character/{self.character.id}', data={
+        response = self.client.post(f'/user/edit_character/{self.character.id}', data={
             'name': 'Harry Potter Updated',
-            'house': 'Gryffindor',
-            'role': 'Wizard',
-            'strength': 'Bravery'
+            'house': self.house,
+            'role': self.role,
+            'strength': self.strength,
+            'animal': 'Owl',
+            'symbol': 'Lightning Bolt',
+            'nickname': 'The Chosen One',
+            'age': 17,
+            'death': None
         })
 
         # Check for a 302 status code (redirect to character list)
         self.assertEqual(response.status_code, 302)
         # Check the redirect location to confirm it's correct
-        self.assertIn('/user/character_list', response.location)
+        self.assertIn('/user/my_character_list', response.location)
 
         # Refetch the character in the session context to avoid detached instance
         with self.app.app_context():

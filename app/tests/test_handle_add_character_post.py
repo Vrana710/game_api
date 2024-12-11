@@ -22,7 +22,7 @@ class TestHandleAddCharacterPostSuccess(unittest.TestCase):
         """Set up the test environment, create test data."""
         self.app = create_app()
         self.client = self.app.test_client()
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("TEST_DATABASE_URL")
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
         self.app.config['SERVER_NAME'] = 'localhost:5000'
         self.app.config['APPLICATION_ROOT'] = '/'
         self.app.config['TESTING'] = True
@@ -60,11 +60,11 @@ class TestHandleAddCharacterPostSuccess(unittest.TestCase):
 
             db.session.commit()
 
-    def tearDown(self):
-        """Clean up after each test."""
-        with self.app.app_context():
-            db.session.remove()
-            db.drop_all()
+    # def tearDown(self):
+    #     """Clean up after each test."""
+    #     with self.app.app_context():
+    #         db.session.remove()
+    #         db.drop_all()
 
     @patch('app.controllers.common_fun.fetch_character_data')
     def test_handle_add_character_post_success(self, mock_fetch_character_data):
@@ -75,9 +75,9 @@ class TestHandleAddCharacterPostSuccess(unittest.TestCase):
         # Mock the character data to be fetched
         mock_fetch_character_data.return_value = {
             'name': 'Harry Potter',
-            'house': 'Gryffindor',
-            'role': 'Wizard',
-            'strength': 'Bravery',
+            'house': self.house,
+            'role': self.role,
+            'strength': self.strength,
             'animal': 'Owl',
             'symbol': 'Lightning Bolt',
             'nickname': 'The Chosen One',
@@ -92,9 +92,14 @@ class TestHandleAddCharacterPostSuccess(unittest.TestCase):
         # Make a POST request to add a new character
         response = self.client.post('/user/add_character', data={
             'name': 'Harry Potter',
-            'house': 'Gryffindor',
-            'role': 'Wizard',
-            'strength': 'Bravery'
+            'house': self.house,
+            'role': self.role,
+            'strength': self.strength,
+            'animal': 'Owl',
+            'symbol': 'Lightning Bolt',
+            'nickname': 'The Chosen One',
+            'age': 17,
+            'death': None
         })
 
         # Check for a 302 status code (redirect to character list)
