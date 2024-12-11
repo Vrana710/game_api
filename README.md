@@ -64,6 +64,7 @@ game_api/
 │    │   ├── auth_controllers/           # Handles user-related Authentication actions
 │    │   │   ├── auth_controller_for_login.py
 │    │   │   └── auth_controller_for_logout.py
+│    │   │
 │    │   ├── user_controllers/           # Handles user-related actions
 │    │   │   ├── user_controller_for_add_character.py
 │    │   │   ├── user_controller_for_delete_character.py
@@ -72,6 +73,7 @@ game_api/
 │    │   │   ├── user_controller_for_user_dashboard.py
 │    │   │   ├── user_controller_for_view_character_list.py
 │    │   │   └── user_controller_for_view_user_profile.py
+│    │   │
 │    │   ├── common_fun.py               # Common functions for various actions
 │    │   ├── contact_controller.py       # Contact logic
 │    │   └── signup_user_controller.py   # Signup User Logic
@@ -107,12 +109,20 @@ game_api/
 │    │   ├── login.html                  # Login page
 │    │   └── signup.html                 # Signup page
 │    │
-│    ├── tests/                          # Test files
-│    │   ├── test_character.py           # Tests for character-related features
-│    │   └── test_config.py              # Tests for configuration
+│    ├── tests/                                 # Test files
+│    │   ├── test_common_fun.py                 # Tests for common functions
+│    │   ├── test_file_upload.py                # Tests for file upload (For Profile Image)
+│    │   ├── test_handle_add_character_post.py  # Tests for Add Character
+│    │   ├── test_handle_character_update.py    # Tests for Update Character
+│    │   ├── test_handle_missing_character.py   # Tests for Missing Character
+│    │   ├── test_handle_not_logged_in.py       # Tests for not logged in user.
+│    │   ├── test_user_session.py               # Tests for Session 
+│    │   └── test_config.py                     # Tests for configuration
+│    │
 │    ├── __init.py                       # Initializes configures its core components
 │    ├── characters.json                 # Sample character data
 │    └── models.py                       # Database models
+│    
 ├── .env                            # Environment variables
 ├── .gitignore                      # Git ignore file
 ├── config.py                       # Application configuration
@@ -289,14 +299,12 @@ To run the tests and interpret the results, follow these steps:
 2. **Run Tests**: To run the test suite, use the following command:
    ```bash
    pytest
-   
-   python3 -m pytest --cov=game_api --cov-report=html
    ```
 
    This will automatically discover and run all the test cases in the `tests` directory. If you wish to run specific tests, you can specify the test file or test function:
    ```bash
-    python3 -m pytest tests/test_character.py
-   python3 -m pytest tests/test_config.py
+    python3 -m pytest app/tests/test_common_fun.py
+    python3 -m pytest app/tests/test_config.py
    ```
 
 3. **Interpreting Results**: After running the tests, `pytest` will provide a summary of the test results. If all tests pass, the output will indicate `X passed in Y seconds`. If any tests fail, `pytest` will show detailed information about the failure, including the error message and the failing test case.
