@@ -1,3 +1,30 @@
+"""=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_handle_character_update.py
+Description:
+The `test_handle_character_update.py` file defines the test suite for the character update functionality in the Game API App. It verifies the process of updating an existing character's details, ensuring that the character's information is correctly modified in the database. The test simulates a user session, modifies character details, and checks for appropriate redirects and updates.
+
+Key Features:
+1. **Character Update**:
+   - **Mocking**: Mocks the process of fetching character data to simulate the update operation.
+   - **Database Validation**: Ensures that the character's information is successfully updated in the database after a POST request.
+   - **Redirection**: Verifies that the user is redirected to the character list after a successful update.
+
+2. **Session Management**:
+   - Ensures the user is logged in by simulating a session and confirming the user's identity through session data.
+
+3. **Test Setup**:
+   - Creates a test environment with necessary test data, including a test user, house, role, strength, and an initial character.
+
+4. **Flash Messaging and Feedback**:
+   - Though not directly tested in this script, it ensures that feedback is provided to the user through proper redirects after updating the character.
+
+Created: 2024-12-09
+Updated: 2024-12-09
+=============================================================================
+"""
+
 import os
 import uuid
 import unittest

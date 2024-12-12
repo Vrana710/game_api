@@ -1,3 +1,28 @@
+"""
+=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_handle_missing_character.py
+Description:
+The `test_handle_missing_character.py` file defines the test suite for handling the case when a character's name is missing during the update process in the Game API App. It tests the behavior of the application when a character name is required but not provided. The test ensures that the application correctly triggers a flash message indicating the error.
+
+Key Features:
+1. **Missing Character Name Handling**:
+   - **Flash Message**: Verifies that a flash message is shown when the character name is missing, indicating the error to the user.
+   - **Error Handling**: Ensures the application gracefully handles missing character information with appropriate user feedback.
+
+2. **Test Setup**:
+   - Sets up the application in test mode and pushes the application context for the test.
+   - Uses the `patch` decorator to mock the `flash` function and assert that it is called with the expected error message.
+
+3. **Application Context**:
+   - The test ensures that the application context is properly set up and that the necessary configurations are loaded for testing.
+
+Created: 2024-12-09
+Updated: 2024-12-09
+=============================================================================
+"""
+
 import os
 import unittest
 from unittest.mock import patch

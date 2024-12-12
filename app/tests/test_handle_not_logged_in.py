@@ -1,3 +1,27 @@
+"""
+=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_handle_not_logged_in.py
+Description:
+The `test_handle_not_logged_in.py` file defines the test suite for handling cases where users are not logged in and attempt to access restricted areas of the Game API App. It tests the behavior of the application when a user is not authenticated, ensuring they are redirected to the login page. The test checks that the application correctly handles unauthorized access attempts by using redirection.
+
+Key Features:
+1. **Not Logged In Handling**:
+   - **Redirection**: Verifies that the user is redirected to the login page when they attempt to access a restricted area without being logged in.
+
+2. **Test Setup**:
+   - Sets up the application in test mode and simulates the request context for the test.
+   - Uses the `patch` decorator to mock the `redirect` and `url_for` functions, ensuring proper redirection behavior.
+
+3. **Application Context**:
+   - Ensures the application context is set up correctly for the test, allowing for accurate simulation of user interaction.
+
+Created: 2024-12-09
+Updated: 2024-12-09
+=============================================================================
+"""
+
 import os
 import unittest
 from unittest.mock import patch

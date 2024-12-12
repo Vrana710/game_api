@@ -1,3 +1,35 @@
+"""
+=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_file_upload.py
+Description:
+The `test_file_upload.py` file contains unit tests for handling file uploads
+within the Game API App. It focuses on testing the `handle_file_upload` function,
+which processes the uploading of files, particularly profile pictures. The tests
+cover a range of scenarios, including successful uploads, missing files, and
+invalid file extensions. The file ensures that the file upload logic behaves as
+expected and that only valid files are accepted.
+
+Key Features:
+1. **File Upload Handling**:
+   - **Valid File Upload**: Tests that a valid file (e.g., `.jpg`) is uploaded successfully.
+   - **No File Uploaded**: Ensures that the function returns `None` when no file is uploaded.
+   - **Invalid File Extension**: Verifies that files with unsupported extensions (e.g., `.txt`) are rejected.
+
+2. **Unit Testing**:
+   - Uses Python's `unittest` framework for structuring and running the tests, ensuring correct behavior of the `handle_file_upload` function.
+
+3. **Test Setup and Teardown**:
+   - Sets up a test environment by initializing the app, configuring it for testing, and ensuring the upload folder exists before running tests. Optionally cleans up after the tests.
+
+4. **Mocking and MagicMock**:
+   - Uses `MagicMock` to simulate file uploads and verify the behavior of the `handle_file_upload` function without actual file interactions.
+
+Created: 2024-12-09
+Updated: 2024-12-09
+=============================================================================
+"""
 import os
 import unittest
 from unittest.mock import MagicMock

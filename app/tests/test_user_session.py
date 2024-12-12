@@ -1,3 +1,27 @@
+"""=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_user_session.py
+Description:
+The `test_user_session.py` file defines the test suite for handling user session management within the Game API App. It tests the behavior of the application when checking if a user is logged in by querying the session for the user ID and matching it to the database. The tests ensure that the application properly identifies when a user is logged in or not, based on session data.
+
+Key Features:
+1. **User Session Management**:
+   - **Logged In**: Verifies that the application correctly identifies a logged-in user by checking the session for a valid user ID and retrieving user data from the database.
+   - **Not Logged In**: Ensures that the application correctly handles the case where the session does not contain a valid user ID, returning `None` to indicate that no user is logged in.
+
+2. **Test Setup**:
+   - Sets up the Flask app in test mode and simulates request contexts for testing.
+   - Mocks the database call to retrieve user data and patches the Flask session to simulate logged-in and non-logged-in states.
+
+3. **Application Context**:
+   - Ensures that the application context is correctly pushed and popped around tests, allowing for accurate simulation of user interactions.
+
+Created: 2024-12-09
+Updated: 2024-12-09
+=============================================================================
+"""
+
 import os
 import unittest
 from unittest.mock import patch, MagicMock

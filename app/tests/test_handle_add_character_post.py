@@ -1,3 +1,39 @@
+"""
+=============================================================================
+Project: Game API App
+Developer: Varsha Rana
+File: test_handle_add_character_post.py
+Description:
+The `test_handle_add_character_post.py` file contains unit tests for the
+`handle_add_character_post` function, which is responsible for adding new
+characters to the Game API App. The tests focus on verifying the success
+path of the character creation process, ensuring that character data is
+correctly added to the database, and that the user is properly redirected
+to the character list page after a successful submission. The tests also
+check that the session is managed correctly, and that the necessary
+database entities (e.g., House, Role, Strength) exist or are created.
+
+Key Features:
+1. **Character Creation**:
+   - **Database Setup**: Ensures that the necessary data (House, Role, Strength) is available or created in the database.
+   - **Mocking**: Mocks the character data and user details to simulate a character creation request.
+
+2. **User Authentication**:
+   - **Login Simulation**: Simulates a user login and sets the `user_id` session cookie to test the character addition functionality.
+
+3. **Successful Character Addition**:
+   - **Response Verification**: Ensures that the response status is successful (200) and that the user is redirected to the character list page.
+
+4. **Database Assertions**:
+   - Verifies that the newly created character data is correctly stored in the database and associated with the correct user.
+
+5. **Session Management**:
+   - Ensures that the session remains active after the character addition process, verifying that the user is still logged in.
+
+Created: 2024-12-09
+Updated: 2024-12-09
+=============================================================================
+"""
 import os
 import unittest
 from unittest.mock import patch, MagicMock
