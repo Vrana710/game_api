@@ -4,6 +4,7 @@ Game API is a web-based platform that allows users to manage characters, edit pr
 
 ## Table of Contents
 - [Installation](#installation)
+- [Demo](#demo)
 - [Project Structure](#project-structure)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
@@ -49,6 +50,11 @@ To run this project locally, follow the steps below:
    ```bash
    python run.py
    ```
+   
+## Demo
+
+Watch the demo video of the MoviWeb App.
+
 
 ## Project Structure
 
