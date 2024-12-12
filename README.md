@@ -53,7 +53,7 @@ To run this project locally, follow the steps below:
    
 ## Demo
 
-Watch the demo video of the MoviWeb App.[here](https://github.com/Vrana710/game_api/blob/main/app/static/video/demo.mp4).
+Watch the demo video of the Game API App.[here](https://github.com/Vrana710/game_api/blob/main/app/static/video/demo.mp4).
 
 https://github.com/user-attachments/assets/29cb6cdd-23ca-44a4-a546-6629de3c8ac2
 
