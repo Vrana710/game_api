@@ -303,7 +303,6 @@ To run the tests and interpret the results, follow these steps:
 
    This will automatically discover and run all the test cases in the `tests` directory. If you wish to run specific tests, you can specify the test file or test function:
    ```bash
-    python3 -m pytest app/tests/test_common_fun.py
     python3 -m pytest app/tests/test_config.py
    ```
 
