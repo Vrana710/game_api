@@ -11,6 +11,7 @@ from app.controllers.common_fun import user_logged_in
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
+
 class TestHandleAddCharacterPostSuccess(unittest.TestCase):
     """
     Test the handle_add_character_post function for success case.
