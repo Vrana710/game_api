@@ -20,7 +20,7 @@ class TestHandleAddCharacterPostSuccess(unittest.TestCase):
         """Set up the test environment, create test data."""
         self.app = create_app()
 
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("TEST_DATABASE_URL")
         self.app.config['SERVER_NAME'] = 'localhost:5000'
         self.app.config['APPLICATION_ROOT'] = '/'
         self.app.config['TESTING'] = True
